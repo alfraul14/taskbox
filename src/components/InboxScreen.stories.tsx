@@ -5,6 +5,13 @@ import { http, HttpResponse } from 'msw';
 import { MockedState } from './TaskList.stories';
 import { Provider } from 'react-redux';
 
+import {
+  fireEvent,
+  waitFor,
+  within,
+  waitForElementToBeRemoved,
+} from '@storybook/test';
+
 const meta: Meta<typeof InboxScreen> = {
   component: InboxScreen,
   title: 'InboxScreen',
@@ -26,6 +33,16 @@ export const Default: Story = {
       ],
     },
   },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement);
+    // Espera a que termine el loading
+    await waitForElementToBeRemoved(await canvas.findByTestId('loading'));
+    // Simula pin de la primera y tercera tarea
+    await waitFor(async () => {
+      await fireEvent.click(canvas.getByLabelText('pinTask-1'));
+      await fireEvent.click(canvas.getByLabelText('pinTask-3'));
+    });
+  },
 };
 
 export const Error: Story = {
@@ -33,9 +50,7 @@ export const Error: Story = {
     msw: {
       handlers: [
         http.get('https://jsonplaceholder.typicode.com/todos?userId=1', () => {
-          return new HttpResponse(null, {
-            status: 403,
-          });
+          return new HttpResponse(null, { status: 403 });
         }),
       ],
     },
