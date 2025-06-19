@@ -1,6 +1,5 @@
 
- import type { TaskData } from '../types';
-
+import type { TaskData } from '../types';
 
 type TaskProps = {
   /** Composition of the task */
@@ -41,6 +40,7 @@ export default function Task({
           name="title"
           id={`title-${id}`}
           placeholder="Input title"
+         style={{ textOverflow: "ellipsis" }}
         />
       </label>
       {state !== "TASK_ARCHIVED" && (
