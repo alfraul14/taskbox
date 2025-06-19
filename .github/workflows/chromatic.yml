@@ -8,7 +8,7 @@ on: push
 # List of jobs
 jobs:
   chromatic:
-    name: 'Run Chromatic'
+    name: 'Run Chromatic 🚁'
     runs-on: ubuntu-latest
     # Job steps
     steps:
